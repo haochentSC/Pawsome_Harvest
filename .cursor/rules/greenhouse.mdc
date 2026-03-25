@@ -1,0 +1,27 @@
+---
+description: Tiny Greenhouse XR — project rules for Cursor AI
+globs: ["Assets/Scripts/**/*.cs"]
+alwaysApply: true
+---
+
+# Tiny Greenhouse XR — Cursor Rules
+
+Always read `AI_CONTEXT.md` at the project root before helping with this project.
+It contains the full architecture, current build state, formulas, and rubric mapping.
+
+## Critical Rules
+
+- `FeedbackManager` = zero game logic. Pure output only.
+- `EaseScale` = spawn from 0. `ScalePop` = button pulse. Never swap.
+- All XR interaction = XRSimpleInteractable button press. No physics grab.
+- One scene only. No new scenes.
+- XRI types must use fully qualified namespaces:
+  `UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable`
+- Methods wired to UnityEvent must be `public`.
+- No DOTween. All easing is coroutines.
+- No Animator controllers for plant growth — use `GameObject.SetActive()`.
+
+## Current Task
+
+Prompt 5: Write `CropData.cs` (ScriptableObject), `Enums.cs`, and `PotSlot.cs`.
+See `docs/IMPLEMENTATION_PLAN.md` for full spec.

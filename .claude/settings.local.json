@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp:*)",
+      "Bash(curl:*)",
+      "Bash(SESSION=\"059bf9aea5634bf8afef0610dfe163cd\")",
+      "Bash(__NEW_LINE_b91639571187b17c__ curl:*)"
+    ]
+  }
+}
