@@ -9,6 +9,7 @@ using TMPro;
 /// </summary>
 public class ResourceDisplay : MonoBehaviour
 {
+    public static ResourceDisplay Instance { get; private set; }
     // ── Inspector ─────────────────────────────────────────────────────────────
     [Header("Money")]
     [SerializeField] private TMP_Text moneyText;
@@ -32,6 +33,12 @@ public class ResourceDisplay : MonoBehaviour
     // Unity lifecycle
     // ─────────────────────────────────────────────────────────────────────────
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        Instance = this;
+    }
+
     private void Start()
     {
         // Subscribe to economy events
@@ -39,6 +46,7 @@ public class ResourceDisplay : MonoBehaviour
         {
             EconomyManager.Instance.OnMoneyChanged      += OnMoneyChanged;
             EconomyManager.Instance.OnFertilizerChanged += OnFertilizerChanged;
+            EconomyManager.Instance.OnRateChanged       += OnRateChanged;
         }
         else
         {
@@ -58,6 +66,7 @@ public class ResourceDisplay : MonoBehaviour
         {
             EconomyManager.Instance.OnMoneyChanged      -= OnMoneyChanged;
             EconomyManager.Instance.OnFertilizerChanged -= OnFertilizerChanged;
+            EconomyManager.Instance.OnRateChanged       -= OnRateChanged;
         }
     }
 
@@ -68,7 +77,12 @@ public class ResourceDisplay : MonoBehaviour
     private void OnMoneyChanged(float newMoney)
     {
         UpdateMoneyText(newMoney);
-        UpdateRateText();
+    }
+
+    private void OnRateChanged(float newRate)
+    {
+        if (moneyRateText != null)
+            moneyRateText.text = $"+{newRate:F2}/s";
     }
 
     private void OnFertilizerChanged(float newFert)

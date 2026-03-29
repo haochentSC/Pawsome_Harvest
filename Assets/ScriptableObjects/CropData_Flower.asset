@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CropData
   cropName: Flower
   seedCost: 10
-  harvestBonus: 3.5
-  growTime: 45
+  harvestBonus: 30
+  growTime: 3
   seedlingPrefab: {fileID: 0}
   maturePrefab: {fileID: 0}

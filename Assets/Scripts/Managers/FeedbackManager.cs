@@ -68,7 +68,6 @@ public class FeedbackManager : MonoBehaviour
     public void TriggerCoinParticles(Vector3 worldPos, float ratePerPot)
     {
         if (coinParticleSystem == null) return;
-         Debug.Log($"[Particles] TriggerCoin called. ps={coinParticleSystem != null}, pos={worldPos}");
         int count = Mathf.Clamp(Mathf.CeilToInt(ratePerPot * 10f), minParticlesPerBurst, maxParticlesPerBurst);
         BurstParticlesAt(coinParticleSystem, worldPos, count);
     }

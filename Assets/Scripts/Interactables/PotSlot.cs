@@ -132,7 +132,9 @@ public class PotSlot : MonoBehaviour
 
     private IEnumerator GrowRoutine()
     {
-        float totalTime = cropData != null ? cropData.growTime : 30f;
+        float irrigationMultiplier = UpgradeManager.Instance != null
+            ? UpgradeManager.Instance.GetIrrigationMultiplier() : 1f;
+        float totalTime = (cropData != null ? cropData.growTime : 30f) / irrigationMultiplier;
         _growTimer = 0f;
 
         while (_growTimer < totalTime)
@@ -186,9 +188,7 @@ public class PotSlot : MonoBehaviour
         RefreshButtons();
 
         // Notify PotManager so it can update EconomyManager active count
-        // PotManager.Instance will be wired in Prompt 6.
-        // The null check here makes this safe before Prompt 6 exists.
-        // PotManager.Instance?.NotifyPotStateChanged();
+        PotManager.Instance?.NotifyPotStateChanged();
     }
 
     private void RefreshButtons()

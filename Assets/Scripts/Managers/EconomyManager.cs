@@ -48,6 +48,9 @@ public class EconomyManager : MonoBehaviour
     /// <summary>Fired every tick. Passes (delta, effectiveRatePerPot) for particle scaling.</summary>
     public event Action<float, float> OnMoneyTick;
 
+    /// <summary>Fired whenever the active pot count or a multiplier changes. Passes new rate.</summary>
+    public event Action<float> OnRateChanged;
+
     // ─────────────────────────────────────────────────────────────────────────
     // Unity lifecycle
     // ─────────────────────────────────────────────────────────────────────────
@@ -64,7 +67,6 @@ public class EconomyManager : MonoBehaviour
 
     private void Start()
     {
-        _activePotCount = 2;   //for debug only
         _money = startingMoney;
         OnMoneyChanged?.Invoke(_money);
         StartCoroutine(TickLoop());
@@ -97,10 +99,14 @@ public class EconomyManager : MonoBehaviour
             OnMoneyChanged?.Invoke(_money);
             OnMoneyTick?.Invoke(delta, ratePerPot);
 
-            // TEMP placeholder position -- Prompt 6 replaces this with each pot's
-            // real world-space ParticleAnchor position.
+            // Fire one coin particle burst above the pot area.
             if (FeedbackManager.Instance != null)
-                FeedbackManager.Instance.TriggerCoinParticles(new Vector3(0f, 1.2f, 1.5f), ratePerPot);
+            {
+                Vector3 burstPos = PotManager.Instance != null
+                    ? PotManager.Instance.GetCenterOfActivePots()
+                    : new Vector3(0f, 1.5f, 1.5f);
+                FeedbackManager.Instance.TriggerCoinParticles(burstPos, CurrentMoneyRate);
+            }
         }
 
         // ── Fertilizer ───────────────────────────────────────────────────────
@@ -112,7 +118,12 @@ public class EconomyManager : MonoBehaviour
             OnFertilizerChanged?.Invoke(_fertilizer);
 
             if (FeedbackManager.Instance != null)
-                FeedbackManager.Instance.TriggerFertParticles(Vector3.up * 1.1f, fertPerPot);
+            {
+                Vector3 fertPos = FertilizerStation.Instance != null
+                    ? FertilizerStation.Instance.transform.position + Vector3.up * 0.3f
+                    : new Vector3(0f, 1.3f, -1.5f);
+                FeedbackManager.Instance.TriggerFertParticles(fertPos, fertPerPot);
+            }
         }
     }
 
@@ -131,6 +142,7 @@ public class EconomyManager : MonoBehaviour
         CurrentFertRate  = _fertilizerUnlocked
             ? baseFertRatePerPot * _activePotCount * _fertMultiplier
             : 0f;
+        OnRateChanged?.Invoke(CurrentMoneyRate);
     }
 
     // ─────────────────────────────────────────────────────────────────────────
