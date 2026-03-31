@@ -41,6 +41,11 @@ public class PotSlot : MonoBehaviour
     [Tooltip("World-space position EconomyManager uses for coin particle bursts.")]
     [SerializeField] private Transform particleAnchor;
 
+    [Header("Plant Model")]
+    [Tooltip("The mature plant model sitting in the pot. Hidden until Mature state. " +
+             "Drag the tomato/herb/flower child GameObject here.")]
+    [SerializeField] private GameObject maturePlantObject;
+
     [Header("Grow Progress Visual (optional)")]
     [Tooltip("Ring or bar that shows grow progress. Scaled 0→1 along X.")]
     [SerializeField] private Transform growProgressBar;
@@ -195,6 +200,7 @@ public class PotSlot : MonoBehaviour
     {
         if (buttonPlant   != null) buttonPlant.SetEnabled(_state == PotState.Empty);
         if (buttonHarvest != null) buttonHarvest.SetEnabled(_state == PotState.Mature);
+        if (maturePlantObject != null) maturePlantObject.SetActive(_state == PotState.Mature);
     }
 
     // ─────────────────────────────────────────────────────────────────────────
