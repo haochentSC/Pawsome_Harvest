@@ -1,0 +1,10 @@
+# ninja log v5
+58	1839	7968293821565004	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	4771f41451ef95ef
+87	1866	7968293821848288	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	63fc6d6997ea04d2
+1	1876	7968293821958999	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	72ce31138856f3df
+122	1952	7968293822763802	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	a127205857660286
+19	2009	7968293823308158	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	677363900c7a4254
+103	2083	7968293824064490	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	f9b8220432e8d2ec
+74	2271	7968293825946560	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	1b580724166c5e38
+40	2444	7968293827544195	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	68eb1e3feb86c10a
+2445	2643	7968293829556071	C:/Users/reach/Documents/GitHub/MP3_Juicy_Sim/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/6rv1e717/obj/arm64-v8a/libgame.so	92bcded15722c757

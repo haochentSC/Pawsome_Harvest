@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
+
 /// <summary>
 /// Drives the world-space HUD canvas.
 /// Subscribes to EconomyManager events and updates text labels.
@@ -24,6 +25,14 @@ public class ResourceDisplay : MonoBehaviour
 
     [Header("Rate Display (optional)")]
     [SerializeField] private TMP_Text moneyRateText;        // e.g. "+0.30/s" -- can leave unassigned
+
+
+    // trophies
+    [SerializeField] private GameObject trophy1;
+    [SerializeField] private GameObject trophy2;
+    [SerializeField] private GameObject trophy3;
+
+
 
     // ── Private state ─────────────────────────────────────────────────────────
     private int _displayedGeneratorCount;
@@ -58,6 +67,11 @@ public class ResourceDisplay : MonoBehaviour
         SetFertilizerVisible(false);
         UpdateMoneyText(EconomyManager.Instance != null ? EconomyManager.Instance.GetMoney() : 0f);
         UpdateGeneratorCount(0);
+
+        // Hide trophies at start
+        if (trophy1 != null) trophy1.SetActive(false);
+        if (trophy2 != null) trophy2.SetActive(false);
+        if (trophy3 != null) trophy3.SetActive(false);
     }
 
     private void OnDestroy()
@@ -77,6 +91,35 @@ public class ResourceDisplay : MonoBehaviour
     private void OnMoneyChanged(float newMoney)
     {
         UpdateMoneyText(newMoney);
+
+
+    // ── Trophy unlocks ────────────────────────────────────────────────
+    if (trophy1 != null && newMoney >= 500f && !trophy1.activeSelf)
+    {
+        trophy1.SetActive(true);
+        FeedbackManager.Instance?.TriggerCoinParticles(
+            trophy1.transform.position,
+            0.5f
+        );
+    }
+
+    if (trophy2 != null && newMoney >= 1000f && !trophy2.activeSelf)
+    {
+        trophy2.SetActive(true);
+        FeedbackManager.Instance?.TriggerCoinParticles(
+            trophy2.transform.position,
+            0.5f
+        );
+    }
+
+    if (trophy3 != null && newMoney >= 1500f && !trophy3.activeSelf)
+    {
+        trophy3.SetActive(true);
+        FeedbackManager.Instance?.TriggerCoinParticles(
+            trophy3.transform.position,
+            0.5f
+        );
+    }
     }
 
     private void OnRateChanged(float newRate)

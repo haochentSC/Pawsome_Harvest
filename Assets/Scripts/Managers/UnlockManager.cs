@@ -97,6 +97,9 @@ public class UnlockManager : MonoBehaviour
 
         OnFertilizerUnlocked?.Invoke();
         Debug.Log("[UnlockManager] Fertilizer Station unlocked!");
+
+        TutorialManager.Instance.ShowTutorial("Fertilizer unlocked!");
+
     }
 
     // ── Save / Load ───────────────────────────────────────────────────────────
