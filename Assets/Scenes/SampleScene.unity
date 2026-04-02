@@ -6893,8 +6893,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d669cab73217b6542ad1739d056f045e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EyeFollow
-  target: {fileID: 1351523045}
-  forwardMarker: {fileID: 1403266951}
+  target: {fileID: 0}
+  forwardMarker: {fileID: 0}
   minY: -50
   maxY: 50
   fixedX: -20
@@ -7391,6 +7391,8 @@ GameObject:
   - component: {fileID: 730769972}
   - component: {fileID: 730769971}
   - component: {fileID: 730769975}
+  - component: {fileID: 730769976}
+  - component: {fileID: 730769977}
   m_Layer: 0
   m_Name: RightEye
   m_TagString: Untagged
@@ -7494,6 +7496,40 @@ Transform:
   m_Father: {fileID: 1124732205}
   m_LocalEulerAnglesHint: {x: -20, y: 0, z: 0}
 --- !u!114 &730769975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730769970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d669cab73217b6542ad1739d056f045e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EyeFollow
+  target: {fileID: 0}
+  forwardMarker: {fileID: 0}
+  minY: -50
+  maxY: 50
+  fixedX: -20
+--- !u!114 &730769976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730769970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d669cab73217b6542ad1739d056f045e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EyeFollow
+  target: {fileID: 1351523045}
+  forwardMarker: {fileID: 1151195103}
+  minY: -50
+  maxY: 50
+  fixedX: -20
+--- !u!114 &730769977
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9358,6 +9394,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1124732205}
   - component: {fileID: 1124732204}
+  - component: {fileID: 1124732206}
   m_Layer: 0
   m_Name: FaceRoot
   m_TagString: Untagged
@@ -9377,14 +9414,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d93a170b1f59b44cb115d82ce45a45d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FaceManager
-  smile1: {fileID: 871263446}
-  smile2: {fileID: 845719444}
-  smile3: {fileID: 207147540}
-  frown: {fileID: 1636572261}
-  pupilLeft: {fileID: 487324547}
-  pupilRight: {fileID: 1546513617}
-  eyeLeft: {fileID: 476427107}
-  eyeRight: {fileID: 730769974}
+  smile1: {fileID: 0}
+  smile2: {fileID: 0}
+  smile3: {fileID: 0}
+  frown: {fileID: 0}
+  pupilLeft: {fileID: 0}
+  pupilRight: {fileID: 0}
+  eyeLeft: {fileID: 0}
+  eyeRight: {fileID: 0}
 --- !u!4 &1124732205
 Transform:
   m_ObjectHideFlags: 0
@@ -9406,6 +9443,26 @@ Transform:
   - {fileID: 207147544}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1124732206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1124732203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d93a170b1f59b44cb115d82ce45a45d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FaceManager
+  smile1: {fileID: 871263446}
+  smile2: {fileID: 845719444}
+  smile3: {fileID: 207147540}
+  frown: {fileID: 1636572261}
+  pupilLeft: {fileID: 487324547}
+  pupilRight: {fileID: 1546513617}
+  eyeLeft: {fileID: 476427107}
+  eyeRight: {fileID: 730769974}
 --- !u!1 &1134634111
 GameObject:
   m_ObjectHideFlags: 0
@@ -11148,6 +11205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1403266951}
+  - component: {fileID: 1403266952}
   m_Layer: 0
   m_Name: LeftEyeFront
   m_TagString: Untagged
@@ -11170,6 +11228,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 476427107}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1403266952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403266950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d669cab73217b6542ad1739d056f045e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EyeFollow
+  target: {fileID: 1351523045}
+  forwardMarker: {fileID: 1403266951}
+  minY: -50
+  maxY: 50
+  fixedX: -20
 --- !u!1 &1469715497
 GameObject:
   m_ObjectHideFlags: 0
