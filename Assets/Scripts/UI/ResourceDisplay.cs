@@ -32,6 +32,17 @@ public class ResourceDisplay : MonoBehaviour
     [SerializeField] private GameObject trophy2;
     [SerializeField] private GameObject trophy3;
 
+    // face smile
+    [SerializeField] private GameObject smile1;
+    [SerializeField] private GameObject smile2;
+    [SerializeField] private GameObject smile3;
+    [SerializeField] private GameObject frown;
+
+    // pupils of eyes
+    [SerializeField] private Transform pupilLeft;
+    [SerializeField] private Transform pupilRight;
+
+
 
 
     // ── Private state ─────────────────────────────────────────────────────────
@@ -72,6 +83,13 @@ public class ResourceDisplay : MonoBehaviour
         if (trophy1 != null) trophy1.SetActive(false);
         if (trophy2 != null) trophy2.SetActive(false);
         if (trophy3 != null) trophy3.SetActive(false);
+
+        // frown at the start
+        if (smile1 != null) smile1.SetActive(false);
+        if (smile2 != null) smile2.SetActive(false);
+        if (smile3 != null) smile3.SetActive(false);
+
+        if (frown != null) frown.SetActive(true);
     }
 
     private void OnDestroy()
@@ -87,6 +105,22 @@ public class ResourceDisplay : MonoBehaviour
     // ─────────────────────────────────────────────────────────────────────────
     // Event handlers
     // ─────────────────────────────────────────────────────────────────────────
+    private IEnumerator ScalePupilsTemporary(float duration)
+    {
+        Vector3 originalLeft = pupilLeft.localScale;
+        Vector3 originalRight = pupilRight.localScale;
+
+        // Set Y scale to 0.5
+        pupilLeft.localScale = new Vector3(originalLeft.x, 0.5f, originalLeft.z);
+        pupilRight.localScale = new Vector3(originalRight.x, 0.5f, originalRight.z);
+
+        yield return new WaitForSeconds(duration);
+
+        // Restore original scale
+        pupilLeft.localScale = originalLeft;
+        pupilRight.localScale = originalRight;
+    }
+
 
     private void OnMoneyChanged(float newMoney)
     {
@@ -101,6 +135,9 @@ public class ResourceDisplay : MonoBehaviour
             trophy1.transform.position,
             0.5f
         );
+
+        // --- Pupils scale for 5 seconds ---
+        StartCoroutine(ScalePupilsTemporary(5f));
     }
 
     if (trophy2 != null && newMoney >= 1000f && !trophy2.activeSelf)
@@ -110,6 +147,9 @@ public class ResourceDisplay : MonoBehaviour
             trophy2.transform.position,
             0.5f
         );
+
+        // --- Pupils scale for 5 seconds ---
+        StartCoroutine(ScalePupilsTemporary(5f));
     }
 
     if (trophy3 != null && newMoney >= 1500f && !trophy3.activeSelf)
@@ -119,7 +159,22 @@ public class ResourceDisplay : MonoBehaviour
             trophy3.transform.position,
             0.5f
         );
+        
+
+        // --- Face expression change ---
+        if (smile1 != null) smile1.SetActive(true);
+        if (smile2 != null) smile2.SetActive(true);
+        if (smile3 != null) smile3.SetActive(true);
+
+        if (frown != null) frown.SetActive(false);
+
+        // --- Pupils scale for 5 seconds ---
+        StartCoroutine(ScalePupilsTemporary(60f));
+
+
     }
+
+
     }
 
     private void OnRateChanged(float newRate)
