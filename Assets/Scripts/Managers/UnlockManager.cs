@@ -12,6 +12,7 @@ using UnityEngine;
 /// </summary>
 public class UnlockManager : MonoBehaviour
 {
+    
     // ── Singleton ─────────────────────────────────────────────────────────────
     public static UnlockManager Instance { get; private set; }
 
@@ -25,6 +26,7 @@ public class UnlockManager : MonoBehaviour
 
     // ── State ─────────────────────────────────────────────────────────────────
     private bool _fertilizerUnlocked = false;
+
 
     // ── Events ────────────────────────────────────────────────────────────────
     public event Action OnFertilizerUnlocked;
@@ -57,7 +59,9 @@ public class UnlockManager : MonoBehaviour
 
     private void OnMoneyChanged(float newMoney)
     {
+
         if (_fertilizerUnlocked) return;
+
 
         if (newMoney >= fertUnlockCost)
             fertilizerStation?.ShowUnlockButton();

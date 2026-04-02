@@ -43,6 +43,8 @@ public class ResourceDisplay : MonoBehaviour
     [SerializeField] private Transform pupilRight;
 
 
+    public TutorialPopup tutorialPopup;
+
 
 
     // ── Private state ─────────────────────────────────────────────────────────
@@ -138,6 +140,9 @@ public class ResourceDisplay : MonoBehaviour
 
         // --- Pupils scale for 5 seconds ---
         StartCoroutine(ScalePupilsTemporary(5f));
+
+        // Tutorial message
+        tutorialPopup.ShowTutorial("Keep raising your stored money to get more crowns!");
     }
 
     if (trophy2 != null && newMoney >= 1000f && !trophy2.activeSelf)
@@ -171,6 +176,7 @@ public class ResourceDisplay : MonoBehaviour
         // --- Pupils scale for 5 seconds ---
         StartCoroutine(ScalePupilsTemporary(60f));
 
+        tutorialPopup.ShowTutorial("Congrats on collecting all the crowns!");
 
     }
 
