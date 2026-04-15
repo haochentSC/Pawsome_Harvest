@@ -1,0 +1,110 @@
+roject: Design Documents
+Due Thursday by 3pm Points 20 Submitting a website url
+Summary
+Welcome to our last game of the year: the open-ended project! It's open-ended, so we're open to any ending. But you should let us know what ending you're hoping to end up at. What kind of game will you be making? What will the player be doing from moment to moment in the game? How will that evolve over the course of the game? You'll answer these questions through your high-level Design Vision Doc. Then you'll break it down into how you'll get there: what features make up this gameplay, which features are core to the experience and which can be cut (and which would just be awesome stretch goals). And who is on your team and what each contributor will be working on. You'll each need to "own" one core feature. You'll answer these questions in your low-level Technical Design Doc. By working on this design doc in your team, you'll get a sense of where your effort will be going.
+
+Deliverables' Details
+You will need to turn in two Google Docs with contributions from each teammate
+
+Design Vision Document
+This document should summarize your game at a high-level. The high level pillars set in this document should be flexible enough to let you re-plan in an agile way as your team meets and discovers new things about what's fun in gameplay or how hard certain things are
+
+Your Design Vision Doc must have the following headers with bulleted lists underneath them answering the questions:
+
+"Pitch" -- What role will your player enact and what challenge or situation do they find themselves in? For example: "You are a father who is secretly an octopus"
+"World" -- What kind of world is the action set in? For example: "high fantasy", "space opera", "Victorian murder mystery", etc.
+"Genre" -- What type of mechanics does the player play? For example: "puzzle", "rhythm game", "first-person shooter", etc.
+"Inspirations" -- What art, stories, or other games are you copying from? For example: "raves for the interactable glow stick props", "Dance Dance Revolution for the directional arrow timing", "claw games for the clumsy manipulation"
+"Required Mechanics" -- What interactions or game rules (known as "mechanics") does your game need to be playable? List one mechanic per team member in your group
+"Core Loop Schedule" -- Half of your mechanics should be things your player interacts with constantly in the game, forming the fundamental "core loop" fun of your game. These are things like Mario's jumping & platforming or Beat Saber's dancing & slashing. List which of your Required Mechanics are in the Core Loop. List them in the order your player will first encounter them in for your tutorial. If they would appear near the same time, think about which you'd explain first to a new player.
+"Meta Loop Schedule" -- The other half of your mechanics should be things that ramp up the excitement of the game the longer the player plays. In the Beat Saber example, new levels with different block spawning patterns would be a Meta Loop mechanic. You should list them in the order your player will encounter them in the ramp up. For Beat Saber, the points accumulating from combos builds up excitement within a level before going to the new level. So the "Combo Points" Meta Loop mechanic should be listed first before the "New Level Block Spawning Patterns" Meta Loop mechanic. If two would appear near the same time, think about which the player would notice first. For Beat Saber, new levels not only have new block spawning patterns but also different visualizers for the different music. Though they both start at the new level, the player will hear the new music first before seeing the first blocks spawn.
+Conclude the document with a section marked "Summary" and write a paragraph describing the game you will make and the player's experience.
+
+Technical Design Document
+This document should break down the work that needs to get done to make each Required Mechanic you planned and who is going to do it. You must also list some optional features you plan on finishing by the Alpha deliverable on the 30th. And then finally some optional features you don't really plan to do, but would be cool to add if you have spare time. Individual Contributors will receive grades separately according to the features they shipped. Mark which teammates will be taking which features for a minimum of 13 story points each, and a maximum of 20 story points.
+
+Your Technical Design Doc must have the following headers and lists:
+
+"Required Mechanics Plan" -- List each Required Mechanic and which teammate will be responsible for its development. This "project owner" should break down the mechanic into programmable elements worth between 5 and 10 points on the Game Features Story Points listed below. List these programmable elements as an indented sub-list under this Required Mechanic's bullet point. Each listing for the programmable elements should clearly name not only the story item it corresponds to, but also describe how the element builds out the Required Mechanic.
+"Alpha Features Plan" -- List each teammate's name and under this bullet point sub-list optional features that would strengthen the game worth between an additional 5 and 15 points on the Game Features Story Points listed below. Each optional feature should not only clearly name the story item it corresponds to, but also describe where it appears in the broader experience of the game.
+"Stretch Features Plan" -- Freely list any other features you'd like to include in your game for your portfolio, but may not get around to in the 5 weeks of this project. These stretch goals do not need to be assigned to any particular teammate
+Conclude the document with a paragraph summarizing how the teammates will collaborate including meeting times and venues (i.e. Discord channel, Zoom room, SC 0222, NCSA 1104, other in-person), how code will be coordinated (preferably GitHub), any dependencies (for example, if the "Block Spawning" mechanic builds on the "Block Movement" mechanic then how will those students work together to get that code handed off?), and any other collaboration plan details you decide on as a team.
+
+Submission Details
+Include a link to a Google Drive with two Google Docs that have the headers, lists, and summary paragraphs described above. You will be graded on whether each of these elements are present.
+
+Game Features Story Points
+Below are User Stories corresponding to features and programmable elements you can deliver in your game. These stories are non-final and subject to change for the next deliverable, as all user stories are. So too, if there is a game feature you want to implement that requires work not reflected in these user stories, please reach out to the professor or teaching staff with your proposed story and we will account for how many points it may be worth.
+
+The stories are divided into sections for easy navigation
+
+Scoring:
+Win Condition Scoreboard (2pts): A visible element in the environment tracks the player's progress towards the win condition
+Collectibles (2pts): there are objects in the environment that the player can collect individually (either through colliding with them or an interaction). A visible element tracks how many collectibles have been collected
+Inventory:
+Hotswap Modal (2pts): pressing a button on the Oculus controllers reveals a display "modal" of several items the player can choose between (e.g. by scrolling or by grabbing the items from the revealed palette). This "modal" should not be visible otherwise
+Sortable Inventory (requires the Hotswap Modal story) (2pts): the inventory can be further expanded to show items not on the more quickly-accessed scroll. Items in this expanded inventory can be moved into a position on the more quickly-accessed Hotswap Modal
+Bag of Holding (requires the Sortable Inventory) (2pts): there are objects in the environment that can be collected and appear in the Inventory. The player can also choose to drop the items from the inventory back into the world.
+Spatial Inventory (requires the Sortable Inventory story) (2pts): every item in the inventory has its own position and size in the inventory. The player can grab and drag items from one location to another to rearrage and sort their inventory. There is a finite size to the inventory that challenges the player to manage the acquisition of items
+Goal Zones (2pts): there are goal spaces in the environment the player needs to reach to progress
+Loss Timer (1pts): a countdown timer is displayed on screen and when it drops to 0 the player loses
+Juice:
+Juicy Feedback (1 feedback = 1pt, 2 feedbacks = 2pts, 3 feedbacks = 3pts, 5 feedbacks = 4pts, 8 feedbacks = 5pts, 13 feedbacks = 6pts, 21 feedbacks = 7pts): interactions provide feedback to the player of what their action has accomplished. Options for feedback are:
+Spatialized Sound Effects: a sound effect plays upon the event. It is spatially located to draw attention to what's changed
+Particle Bursts: a non-looping burst of particles is played upon the event.  It is spatially located to draw attention to what's changed
+Particle Emission Rate Tracking (requires the Resource Simulation story): the particle emission rate is set to match the growth rate of a resource
+Motion Eases: a script-driven motion eases in and out on an object to draw attention to what's changed
+Integrating 3D meshes (3 integrations = 1 points, 5 integrations = 2 points, 8 integrations = 3 points): a number of bespoke meshes are imported into Unity and integrated into the scene, visible in the video (hint: find models on SketchfabLinks to an external site. and use the Sketchfab Unity ImporterLinks to an external site.)
+Triggering integrations (1 trigger = 1pt, 2 triggers = 2pts, 3 triggers = 3pts, 5 triggers = 4pts, 8 triggers = 5pts, 13 triggers = 6pts, 21 triggers = 7pts)
+Animation: an event triggers a unique non-looping animation to play
+Music: moving to a new zone or level triggers a unique music cue to play
+Interactables:
+Grab Interactables (1 prop = 1pts, 3 props = 2pts): there are objects with Grab Interactables (called "props") and Direct Interactors on the player hands
+Poke Interactor Buttons (1 button = 1pts, 2 buttons = 2pts): there are buttons or sliders that can be interacted with by a Poke Interactor on the player hands (for
+exampleLinks to an external site.
+
+)
+Hit Boxes (1 hit box event = 1 pts, 2 hit box events = 2pts): there are scripts triggered by a particular collider intersecting with particular objects
+Copier (3pts): an interaction dynamically instances new copies of an object with a physics rigidbody (e.g. paper clips from stapler, projectiles from a cannon, copies of objects placed on copier machine). There is no cap on how many copies you can make (that is, it isn't just moving some pre-existing objects)
+Prop Verbs (requires the Grab Interactable story) (2 Prop Verbs = 1 point, 3 Prop Verbs = 2 points, 4 Prop Verbs = 3 points, 6 Prop Verbs = 4 points, 9 Prop Verbs = 5 points): pressing a button on the controller creates an effect in the scene, but only when a certain Grab Interactble is held in the controller's corresponding hand
+(5 points) Slice and dice: player can draw a line on an object which slices the object in half. Slicing must generate two independent objects where there was originally only one. The new objects' geometry should follow the line the player drew
+Progression:
+Secrets (2pts): through a hidden interaction, a script triggers to remove an obstruction or otherwise cause new content to appear
+Resource Simulation (1 resource = 1 pts, 2 resources = 2pts, 3 resources = 3pts, 5 resources = 5pts, 8 resources = 6pts, 13 resources = 7pts): there are resource counters that are Euler integrated over timesteps (for example: health, experience points, stamina, gold, food, seeds, etc). A visible element in the scene indicates how much of the resource there is
+Leveling-up Stats (requires the Resource Simulation story) (3pts): there is an interaction to exchange some resource for an increase in a "stat" number. This stat enters the calculations for gaining more resource (e.g. damage per second, passive generator output)
+Leveling to New Interactions (requires the Resource Simulation story) (2pts): the player can exchange some resource to unlock a new interactable/interactor to play with
+Ramping Difficulty (requires Leveling-up Stats) (2pts): after a level-up, the cost for the next level-up increases. There is a visible element that marks the increased distance to the next level-up
+Branching Level Tree (requires "Leveling to New Interactions") (2pts): leveling up to unlock one new interaction opens the possibility to unlock two other new interactions previously unavailable
+Points Scoring (2 pts): certain discrete interactions award the player with points. A visible element in the scene indicates how much of the resource there is
+Combo Streak (requires either Resource Simulation or Points Scoring) (2pts): performing an interaction at the precise time, angle, or location increases a combo counter that multiplies the points scored each time or improves the calculations for gaining more resource
+Multiple Levels (2 levels = 3pts, 3 levels = 4pts, 4 levels = 5pts, 6 levels = 6pts, 9 levels = 7pts, 14 levels = 8pts): the player can move to new scenes with distinct content and interaction placement after "clearing" a level. "Clearing" may be either meeting the Win Condition for that level, elapsing a certain amount of time (see "Timer" story), or reaching an endpoint (see "Goal Zones")
+Level Clear with Ranking (requires Level Transition and Points Scoring) (2pts): before moving to the next level, the amount of points is ranked as D-Rank, C-Rank, B-Rank, or A-Rank (even up to S-Rank, SS-Rank, and SSS-Rank)
+Level Transition (requires Multiple Levels) (2pts): upon "clearing" a level, a transition is played announcing the level completion. This may also be an event that triggers juice for the "Juicy Feedback" stories above (for example, a burst of sparks to mark the level completion, a gold clinking sound effect playing as it tallies your score, animated eases transitioning in the new level's objects)
+Branching Routes (requires Level Transition) (2pts): on the level-up screen there is an interaction available to choose between two different levels to play next
+Vection-free Motion Schemes
+Field of View Restriction on Motion (1pts): the field of view narrows when moving
+Constant Velocity Motion Scheme (1pts): a transition to a new location is performed as a constantly velocity motion in a straight line
+Rest frame vehicle (2pts): a rest frame is added that transports the vehicle through the environment with a fixed element around them at all times
+Teleportation (1pts): the player can move through the scene by pointing to where they want to teleport. There is a visualization previewing where the player would land
+Portals (1pts): (requires the Teleportation feature) Instead of pointing and clicking to teleport, the player may teleport by interacting with a portal object whose texture shows the view from a distant point. HintLinks to an external site.: add a Camera to the scene and use the "Target Texture" property to send its view to a texture you put on an object to be your "portal"
+Procedural Generation (requires Multiple Levels) (7pts): new levels are procedurally generated to create an endless supply of new content for your player to enjoy
+Pausing:
+Restart Option (1 points): a UI button is available for restarting the challenge from the beginning
+Quit Option (1 points): a UI button is available for quitting the game
+Inter-session Saves (3pts): the state of the game (for example anything under the "Progression" header) are saved between sessions
+Idle Progress (requires the Inter-session Saves story) (3pts): upon reloading the game, any time-based mechanics (such as the Resource Simulation story) are updated as if the game had been progressing the whole time the player was away
+Non-Player Behaviors:
+Path Following (2pts): a non-player character or other object follows a path pre-defined by the designer
+Path Planning (requires the Path Following feature) (4pts): the path the character/object follows is dynamically planned in response to the player's effects using a planning algorithm
+NPC Spawner (2pts): new dynamic objects are spawned for the player to contend with
+Conditional Despawning (2pts): through (possibly multiple) player interactions a non-player object can be removed from the scene
+Loot Drop (requires Conditional Despawning and Resource Simulation) (2pts): upon removing the non-player object from the scene, the player acquires more resource
+Enemies (requires Resource Simulation) (2pts): through a collider, the non-player object can reduce the player's Resource
+Attacking Health (requires Enemies and Conditional Despawning) (2pts): the enemies have their own resource they need to stay in the game that is tracked and visibly displayed somewhere in the proximity of the enemy in the scene. Through an interaction the player can "attack" the enemy and decrease its resource.
+Other:
+Multiplayer (10pts): two players can interact with the same interactables in the same simulated space at the same time
+Mirrors (2pts): there is an object that lets the player see themselves in reflection (
+hintLinks to an external site.
+
+: use a camera to a RenderTexture)
+Character Cosmetics & Customization (requires Resource Simulation) (2pts): through an interaction, the player can exchange resource to change the model of their hands or head or how it looks

@@ -4,7 +4,12 @@
       "Bash(claude mcp:*)",
       "Bash(curl:*)",
       "Bash(SESSION=\"059bf9aea5634bf8afef0610dfe163cd\")",
-      "Bash(__NEW_LINE_b91639571187b17c__ curl:*)"
+      "Bash(__NEW_LINE_b91639571187b17c__ curl:*)",
+      "WebFetch(domain:docs.unity3d.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(grep -A 5 \"--- !u!1 &\" \"C:\\\\Users\\\\tongh\\\\MP3_Juicy_Sim\\\\Assets\\\\Scenes\\\\SampleScene.unity\")",
+      "Bash(sed 's/.*m_Name: //')",
+      "Bash(grep -v \"^$\")"
     ]
   }
 }

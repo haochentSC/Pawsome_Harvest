@@ -5,9 +5,10 @@
 Read these files before doing anything:
 - `docs/BUILD_PROGRESS.md` — current state, what's done, what's broken, what's next
 - `docs/ARCHITECTURE.md` — code rules, manager diagram, what's out of scope
-- `docs/IMPLEMENTATION_PLAN.md` — the full 12-step build guide
+- `docs/IMPLEMENTATION_PLAN.md` — the full 22-step build guide (3 parallel tracks)
+- `docs/INTEGRATION_PLAN.md` — how the 3 systems (planting, pet care, lottery) share economy
 
-Current position: **Prompt 5 (CropData + PotSlot)** is the immediate next task.
+Current position: **Prompt 5 (CropData + PotSlot)** is the immediate next task for the planting track.
 
 ---
 
@@ -18,8 +19,10 @@ Current position: **Prompt 5 (CropData + PotSlot)** is the immediate next task.
 - `FeedbackManager` contains zero game logic. It only dispatches effects.
 - `EaseScale` = spawn from zero. `ScalePop` = button press pulse. Never swap them.
 - All managers are singletons on one `Managers` GameObject. No new GameManager-like objects.
-- `CropData` = ScriptableObject. `SaveData` = plain `[Serializable]` class. Do not mix these up.
+- `CropData` = ScriptableObject. `PetData` = ScriptableObject. `LotteryRewardData` = ScriptableObject. `SaveData` = plain `[Serializable]` class. Do not mix these up.
 - One scene only (`SampleScene.unity`). Do not create additional scenes.
+- Cross-system reads use null-coalescing (`PetCareManager.Instance?.GetHarvestBonus() ?? 1f`) so each system works independently.
+- Money is the universal currency. Pet hunger/stress/bonding live in PetCareManager, not EconomyManager. Lottery collectibles/spins live in LotteryManager, not EconomyManager.
 
 ---
 

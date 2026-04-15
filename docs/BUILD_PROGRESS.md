@@ -1,12 +1,14 @@
 # Build Progress
 
-**Last updated:** 2026-03-24
+**Last updated:** 2026-04-14
 
 This document tracks what has been built, what is currently broken or stubbed, and what needs to be done next. Update this file whenever you finish a chunk of work.
 
 ---
 
 ## Overall Status
+
+### Planting System (You)
 
 | Phase | Status |
 |---|---|
@@ -22,6 +24,42 @@ This document tracks what has been built, what is currently broken or stubbed, a
 | Tutorial popups | Not started |
 | Trophy shelf | Not started |
 | Scene geometry + polish | Not started |
+
+### Pet Care System (Teammate)
+
+| Phase | Status |
+|---|---|
+| PetData ScriptableObject | Not started |
+| PetCareManager (vitals tick, bonding) | Not started |
+| PetSlot (bunny interaction buttons) | Not started |
+| PetFoodStation (buy food with money) | Not started |
+| PetVitalsDisplay (world-space bars) | Not started |
+| Bunny 3D model + scene placement | Not started |
+| Pet juicy feedback (hearts, sounds, haptics) | Not started |
+| Combo streak system | Not started |
+| Path following (bunny idle walk) | Not started |
+
+### Lottery System (Teammate)
+
+| Phase | Status |
+|---|---|
+| LotteryRewardData ScriptableObjects | Not started |
+| LotteryManager (spin logic, rewards, collectibles) | Not started |
+| LotteryMachine (spin button, animation) | Not started |
+| CollectibleDisplay (shelf + tracking) | Not started |
+| Lottery machine 3D model + scene placement | Not started |
+| Lottery juicy feedback (stars, sounds, haptics) | Not started |
+| Reward cross-system wiring (seeds, food, boosts) | Not started |
+| Secrets (hidden Easter egg) | Not started |
+
+### Shared / Integration
+
+| Phase | Status |
+|---|---|
+| Cross-system economy wiring | Not started |
+| SaveManager (all 3 systems) | Not started |
+| PauseMenu (restart + quit) | Not started |
+| Final integration testing | Not started |
 
 ---
 
@@ -122,10 +160,11 @@ This builds the core game loop: plant a seed, watch it grow, harvest it.
 - Removes the `_activePotCount = 2` debug stub
 - Routes coin particle positions to real pot anchor locations
 
-### Full Remaining Order
+### Full Remaining Order — Three Parallel Tracks
 
-See IMPLEMENTATION_PLAN.md for the full 12-step plan with details.
+See IMPLEMENTATION_PLAN.md for details on all prompts.
 
+**Track 1: Planting (You) — Prompts 5-12**
 ```
 Prompt 5  — CropData + PotSlot          ← NEXT
 Prompt 6  — PotManager + rate wiring
@@ -135,6 +174,28 @@ Prompt 9  — Fertilizer second resource
 Prompt 10 — SaveManager + offline progress
 Prompt 11 — TutorialManager + popups
 Prompt 12 — Trophy shelf + Eye animator
+```
+
+**Track 2: Pet Care (Teammate) — Prompts 13-16**
+```
+Prompt 13 — PetData + PetCareManager
+Prompt 14 — PetSlot + PetFoodStation
+Prompt 15 — PetVitalsDisplay + bunny feedback
+Prompt 16 — Combo streak + Path following
+```
+
+**Track 3: Lottery (Teammate) — Prompts 17-20**
+```
+Prompt 17 — LotteryRewardData + LotteryManager
+Prompt 18 — LotteryMachine + spin interaction
+Prompt 19 — CollectibleDisplay + collectible shelf
+Prompt 20 — Secrets + ramping ticket cost
+```
+
+**Integration — Prompts 21-22**
+```
+Prompt 21 — Cross-system wiring (harvest bonus, lottery rewards, shared save)
+Prompt 22 — PauseMenu + final polish
 ```
 
 ---
