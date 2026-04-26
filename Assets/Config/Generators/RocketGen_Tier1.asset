@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040056d6702b3f942b0178d6fe07fedf, type: 3}
+  m_Name: RocketGen_Tier1
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieBunker.GeneratorConfig
+  displayName: Rockt Assembler
+  tier: 0
+  resourceType: 1
+  baseRate: 2
+  baseCost: 20
+  costMultiplier: 0
+  revealThreshold: 0
+  meshPrefab: {fileID: 1658855296451982, guid: c818fcbe9d69eb44d9440ab7c8465a1e, type: 3}
