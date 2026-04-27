@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d9528e03d97bea4085e6bf3c8f1bbd6, type: 3}
+  m_Name: Pest_Snail
+  m_EditorClassIdentifier: Assembly-CSharp::PestData
+  type: 0
+  displayName: Pest
+  rewardOnKill: 8
+  drainPerSecond: 0.02
+  drainRadius: 0.8
+  drainTickInterval: 1
+  spawnSound: {fileID: 0}
+  grabSound: {fileID: 0}
+  deathSound: {fileID: 0}

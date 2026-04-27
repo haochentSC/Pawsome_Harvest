@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 9d60644ea0125f242a8f6b9eb00c7c97
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 311558
+  packageName: Fern Asset Creator (Free)
+  packageVersion: 1.0
+  assetPath: Assets/SIOCODE/FernAssetCreator_Free/Scripts/FernAssetCreator_Free.cs
+  uploadId: 735592
