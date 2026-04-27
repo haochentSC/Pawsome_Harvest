@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -52,6 +53,26 @@ public class PotManager : MonoBehaviour
 
         if (ResourceDisplay.Instance != null)
             ResourceDisplay.Instance.UpdateGeneratorCount(activeCount);
+    }
+
+    /// <summary>
+    /// Read-only snapshot of currently active (Growing or Mature) pots.
+    /// Used by PestManager to choose spawn anchors and by Pest.cs for proximity drain checks.
+    /// Allocates a fresh list per call -- fine at the call rates we use (spawn ticks, ~1Hz drain).
+    /// </summary>
+    public IReadOnlyList<PotSlot> ActivePots
+    {
+        get
+        {
+            var list = new List<PotSlot>();
+            if (potSlots != null)
+            {
+                foreach (var slot in potSlots)
+                    if (slot != null && slot.IsActive)
+                        list.Add(slot);
+            }
+            return list;
+        }
     }
 
     /// <summary>

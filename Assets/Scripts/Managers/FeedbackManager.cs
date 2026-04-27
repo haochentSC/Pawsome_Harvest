@@ -25,6 +25,18 @@ public class FeedbackManager : MonoBehaviour
     [Tooltip("Assign a ParticleSystem prefab or scene object for fertilizer bursts.")]
     [SerializeField] private ParticleSystem fertParticleSystem;
 
+    [Tooltip("Fire/ember burst when a pest is destroyed in the fireplace.")]
+    [SerializeField] private ParticleSystem fireBurstParticleSystem;
+
+    [Tooltip("Dark damage puff when a bug drains a pot.")]
+    [SerializeField] private ParticleSystem damagePuffParticleSystem;
+
+    [Tooltip("Small puff that plays where a pest spawns.")]
+    [SerializeField] private ParticleSystem spawnPuffParticleSystem;
+
+    [Tooltip("Small sparkle when the player grabs a pest.")]
+    [SerializeField] private ParticleSystem grabSparkleParticleSystem;
+
     [Header("Particle Settings")]
     [SerializeField] private int minParticlesPerBurst = 1;
     [SerializeField] private int maxParticlesPerBurst = 8;
@@ -82,6 +94,36 @@ public class FeedbackManager : MonoBehaviour
 
         int count = Mathf.Clamp(Mathf.CeilToInt(ratePerPot * 8f), minParticlesPerBurst, maxParticlesPerBurst);
         BurstParticlesAt(fertParticleSystem, worldPos, count);
+    }
+
+    // ── Pest system bursts (called by Pest.cs / PestManager) ─────────────────
+
+    /// <summary>Ember/fire burst at the fireplace when a pest is destroyed.</summary>
+    public void TriggerFireBurst(Vector3 worldPos)
+    {
+        if (fireBurstParticleSystem == null) return;
+        BurstParticlesAt(fireBurstParticleSystem, worldPos, 12);
+    }
+
+    /// <summary>Dark puff at a pot when a bug drains it.</summary>
+    public void TriggerDamagePuff(Vector3 worldPos)
+    {
+        if (damagePuffParticleSystem == null) return;
+        BurstParticlesAt(damagePuffParticleSystem, worldPos, 4);
+    }
+
+    /// <summary>Small puff at the spawn position of a new pest.</summary>
+    public void TriggerSpawnPuff(Vector3 worldPos)
+    {
+        if (spawnPuffParticleSystem == null) return;
+        BurstParticlesAt(spawnPuffParticleSystem, worldPos, 6);
+    }
+
+    /// <summary>Sparkle when the player grabs a pest.</summary>
+    public void TriggerGrabSparkle(Vector3 worldPos)
+    {
+        if (grabSparkleParticleSystem == null) return;
+        BurstParticlesAt(grabSparkleParticleSystem, worldPos, 5);
     }
 
     /// <summary>

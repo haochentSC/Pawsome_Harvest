@@ -17,3 +17,10 @@ public enum UpgradeType
     GrowLights,   // multiplies money rate:  1.0 / 1.2 / 1.4  / 1.6
     Irrigation    // divides grow time:      1.0 / 1.3 / 1.7  / 2.2
 }
+
+public enum PestType
+{
+    Weed,    // no drain; pure obstacle that pays out on disposal
+    Bug,     // small drain on nearby active pots
+    Snail    // larger radius, slower drain than bug, larger reward
+}
