@@ -32,13 +32,39 @@ public class Pest : MonoBehaviour
     [SerializeField] private float bobFrequency = 1.5f;
 
     // ── Runtime ──────────────────────────────────────────────────────────────
-    private bool      _isHeld;
-    private bool      _isDying;
-    private Vector3   _bobOrigin;
-    private float     _bobPhaseOffset;
-    private Coroutine _drainRoutine;
+    private bool             _isHeld;
+    private bool             _isDying;
+    private Vector3          _bobOrigin;
+    private float            _bobPhaseOffset;
+    private Coroutine        _drainRoutine;
+    private XRBaseController _lastGrabController;
 
     public PestData Data => data;
+
+    /// <summary>
+    /// Drain this pest is *currently* applying per second (0 if not draining right now).
+    /// Mirrors the gating in TryDrainNearestPot: held, dying, no pots, or out-of-range = 0.
+    /// </summary>
+    public float CurrentDrainPerSecond
+    {
+        get
+        {
+            if (data == null || data.drainPerSecond <= 0f) return 0f;
+            if (_isHeld || _isDying) return 0f;
+            if (PotManager.Instance == null) return 0f;
+            var pots = PotManager.Instance.ActivePots;
+            if (pots == null || pots.Count == 0) return 0f;
+
+            float bestDist = float.PositiveInfinity;
+            foreach (var p in pots)
+            {
+                if (p == null) continue;
+                float d = Vector3.Distance(transform.position, p.ParticleAnchorPosition);
+                if (d < bestDist) bestDist = d;
+            }
+            return bestDist <= data.drainRadius ? data.drainPerSecond : 0f;
+        }
+    }
 
     // ─────────────────────────────────────────────────────────────────────────
     // Unity lifecycle
@@ -88,8 +114,9 @@ public class Pest : MonoBehaviour
         if (data != null && data.grabSound != null)
             PlayOneShotAt(data.grabSound, transform.position);
 
-        // Haptic on the grabbing controller
+        // Haptic on the grabbing controller (cached so Die() can also fire on it).
         var controller = ResolveController(args);
+        if (controller != null) _lastGrabController = controller;
         if (controller != null && FeedbackManager.Instance != null)
             FeedbackManager.Instance.TriggerHaptic(controller, 0.5f, 0.1f);
     }
@@ -167,7 +194,7 @@ public class Pest : MonoBehaviour
         if (_drainRoutine != null) StopCoroutine(_drainRoutine);
 
         Vector3 pos = FireplaceZone.Instance != null
-            ? FireplaceZone.Instance.transform.position
+            ? FireplaceZone.Instance.transform.position + Vector3.up * 0.5f
             : transform.position;
 
         // Reward
@@ -176,7 +203,11 @@ public class Pest : MonoBehaviour
 
         // Death feedback (rubric hooks #3, #4)
         if (FeedbackManager.Instance != null)
+        {
             FeedbackManager.Instance.TriggerFireBurst(pos);
+            if (_lastGrabController != null)
+                FeedbackManager.Instance.TriggerHaptic(_lastGrabController, 1.0f, 1.0f);
+        }
 
         if (data != null && data.deathSound != null)
         {

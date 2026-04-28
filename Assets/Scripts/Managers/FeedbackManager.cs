@@ -102,7 +102,7 @@ public class FeedbackManager : MonoBehaviour
     public void TriggerFireBurst(Vector3 worldPos)
     {
         if (fireBurstParticleSystem == null) return;
-        BurstParticlesAt(fireBurstParticleSystem, worldPos, 12);
+        BurstParticlesAt(fireBurstParticleSystem, worldPos, 20);
     }
 
     /// <summary>Dark puff at a pot when a bug drains it.</summary>
@@ -116,14 +116,14 @@ public class FeedbackManager : MonoBehaviour
     public void TriggerSpawnPuff(Vector3 worldPos)
     {
         if (spawnPuffParticleSystem == null) return;
-        BurstParticlesAt(spawnPuffParticleSystem, worldPos, 6);
+        BurstParticlesAt(spawnPuffParticleSystem, worldPos, 15);
     }
 
     /// <summary>Sparkle when the player grabs a pest.</summary>
     public void TriggerGrabSparkle(Vector3 worldPos)
     {
         if (grabSparkleParticleSystem == null) return;
-        BurstParticlesAt(grabSparkleParticleSystem, worldPos, 5);
+        BurstParticlesAt(grabSparkleParticleSystem, worldPos, 15);
     }
 
     /// <summary>

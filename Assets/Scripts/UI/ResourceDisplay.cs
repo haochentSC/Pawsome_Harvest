@@ -25,6 +25,14 @@ public class ResourceDisplay : MonoBehaviour
 
     [Header("Rate Display (optional)")]
     [SerializeField] private TMP_Text moneyRateText;        // e.g. "+0.30/s" -- can leave unassigned
+    [Tooltip("Color used when pests are draining money (net rate shown in red).")]
+    [SerializeField] private Color rateDrainColor = new Color(1f, 0.4f, 0.4f);
+    [Tooltip("Color used when no drain is active.")]
+    [SerializeField] private Color rateNormalColor = Color.white;
+    [Tooltip("How often to refresh the displayed net rate (seconds).")]
+    [SerializeField] private float rateRefreshInterval = 0.25f;
+
+    private float _rateRefreshTimer;
 
 
     // trophies
@@ -185,8 +193,30 @@ public class ResourceDisplay : MonoBehaviour
 
     private void OnRateChanged(float newRate)
     {
-        if (moneyRateText != null)
-            moneyRateText.text = $"+{newRate:F2}/s";
+        RefreshRateText();
+    }
+
+    private void Update()
+    {
+        _rateRefreshTimer += Time.deltaTime;
+        if (_rateRefreshTimer >= rateRefreshInterval)
+        {
+            _rateRefreshTimer = 0f;
+            RefreshRateText();
+        }
+    }
+
+    private void RefreshRateText()
+    {
+        if (moneyRateText == null || EconomyManager.Instance == null) return;
+
+        float gross = EconomyManager.Instance.CurrentMoneyRate;
+        float drain = PestManager.Instance != null ? PestManager.Instance.GetActiveDrainPerSecond() : 0f;
+        float net   = gross - drain;
+
+        string sign = net >= 0f ? "+" : "";
+        moneyRateText.text  = $"{sign}{net:F2}/s";
+        moneyRateText.color = drain > 0f ? rateDrainColor : rateNormalColor;
     }
 
     private void OnFertilizerChanged(float newFert)

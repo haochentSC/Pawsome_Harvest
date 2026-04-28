@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pest
   data: {fileID: 11400000, guid: 6aef2deb35e92ac41ae4d8543cb831a0, type: 2}
-  bobAmplitude: 0.03
+  bobAmplitude: 0
   bobFrequency: 1.5
 --- !u!1 &1160002969931580243
 GameObject:

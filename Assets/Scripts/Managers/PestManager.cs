@@ -23,7 +23,7 @@ public class PestManager : MonoBehaviour
 
     [Header("Spawn")]
     [Tooltip("Seconds between spawn attempts.")]
-    [SerializeField] private float spawnInterval = 8f;
+    [SerializeField] private float spawnInterval = 40f;
 
     [Tooltip("Spawn within this radius (XZ) around the chosen active pot.")]
     [SerializeField] private float spawnRadiusAroundPot = 0.5f;
@@ -32,10 +32,13 @@ public class PestManager : MonoBehaviour
     [SerializeField] private float spawnHeightOffset = 0.05f;
 
     [Tooltip("Hard cap on simultaneously alive pests.")]
-    [SerializeField] private int maxAlive = 8;
+    [SerializeField] private int maxAlive = 4;
 
-    [Tooltip("Wait this long after Start before the first spawn attempt.")]
-    [SerializeField] private float startupDelay = 5f;
+    [Tooltip("Pests don't start spawning until the player's money reaches this amount.")]
+    [SerializeField] private float moneyThresholdToStart = 200f;
+
+    [Tooltip("After the money threshold is reached, wait this long before the first spawn attempt.")]
+    [SerializeField] private float postThresholdDelay = 5f;
 
     [Header("Spawn Mix (relative weights)")]
     [SerializeField] private float weedWeight  = 1f;
@@ -44,7 +47,7 @@ public class PestManager : MonoBehaviour
 
     [Header("Infestation")]
     [Tooltip("isInfested flips true when alive count reaches or exceeds this.")]
-    [SerializeField] private int infestationThreshold = 5;
+    [SerializeField] private int infestationThreshold = 3;
 
     [Tooltip("Point Light flipped between safe/danger colors based on infestation state.")]
     [SerializeField] private Light infestationLight;
@@ -58,6 +61,18 @@ public class PestManager : MonoBehaviour
 
     public int  AliveCount   => _alive.Count;
     public int  TotalCleared => _totalCleared;
+
+    /// <summary>Sum of money drain (per second) currently being applied by all alive pests in range of pots.</summary>
+    public float GetActiveDrainPerSecond()
+    {
+        float total = 0f;
+        for (int i = 0; i < _alive.Count; i++)
+        {
+            if (_alive[i] == null) continue;
+            total += _alive[i].CurrentDrainPerSecond;
+        }
+        return total;
+    }
     public bool IsInfested   => _isInfested;
 
     /// <summary>Fired whenever the cleared total changes. PestDisplay subscribes to this.</summary>
@@ -88,7 +103,13 @@ public class PestManager : MonoBehaviour
 
     private IEnumerator SpawnLoop()
     {
-        if (startupDelay > 0f) yield return new WaitForSeconds(startupDelay);
+        while (EconomyManager.Instance == null ||
+               EconomyManager.Instance.GetMoney() < moneyThresholdToStart)
+        {
+            yield return null;
+        }
+
+        if (postThresholdDelay > 0f) yield return new WaitForSeconds(postThresholdDelay);
 
         var wait = new WaitForSeconds(spawnInterval);
         while (true)

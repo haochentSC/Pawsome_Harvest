@@ -18,6 +18,6 @@ MonoBehaviour:
   drainPerSecond: 0.02
   drainRadius: 0.8
   drainTickInterval: 1
-  spawnSound: {fileID: 0}
-  grabSound: {fileID: 0}
-  deathSound: {fileID: 0}
+  spawnSound: {fileID: 8300000, guid: 9cf878862c9700544b9fc57f2fe71a92, type: 3}
+  grabSound: {fileID: 8300000, guid: 9e3177901038c3e4b81101f8bc0e2156, type: 3}
+  deathSound: {fileID: 8300000, guid: 586beddbbf904fa4191617e6ae072a9e, type: 3}
