@@ -1,0 +1,23 @@
+{
+    "name": "LotteryMachine.EditModeTests",
+    "rootNamespace": "",
+    "references": [
+        "LotteryMachine.Runtime",
+        "Unity.TextMeshPro",
+        "Unity.XR.Interaction.Toolkit"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "noEngineReferences": false
+}

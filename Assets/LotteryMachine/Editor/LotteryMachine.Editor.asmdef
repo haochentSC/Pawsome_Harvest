@@ -1,0 +1,20 @@
+{
+    "name": "LotteryMachine.Editor",
+    "rootNamespace": "LotteryMachine.EditorTools",
+    "references": [
+        "LotteryMachine.Runtime",
+        "Unity.TextMeshPro",
+        "Unity.XR.Interaction.Toolkit"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

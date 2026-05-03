@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e79e6c6dac8934fb59897b669e0f37e5, type: 3}
+  m_Name: Pebblebun
+  m_EditorClassIdentifier: Assembly-CSharp::LotteryMachine.RewardDefinition
+  rewardId: pebblebun
+  displayName: Pebblebun
+  rarity: 3
+  weight: 10
+  cardArt: {fileID: 0}
+  cardMaterial: {fileID: 2100000, guid: 08ae5d1ff18a846ef86ba4552b9335dd, type: 2}
+  rewardPrefab: {fileID: 1708795079504384501, guid: 4e06ef20cad654c8d8a1a92e64825991, type: 3}
