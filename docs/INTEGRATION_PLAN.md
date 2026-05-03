@@ -75,20 +75,21 @@ This means planting works even if pet care and lottery aren't in the scene yet.
 
 ## Per-Teammate Feature Ownership & Story Points
 
-### Planting Owner (You) — Required + Alpha: ~17pts
+### Planting Owner (htong9) — Required + Alpha: 18pts
 
-| Feature | Story Item | Points |
-|---|---|---|
-| Money + Fertilizer ticking | Resource Simulation | 2 |
-| 3 upgrade tracks | Leveling-up Stats | 3 |
-| Fertilizer Station unlock | Leveling to New Interactions | 2 |
-| Escalating upgrade costs | Ramping Difficulty | 2 |
-| 10+ XR buttons | Poke Interactor Buttons | 2 |
-| 10 feedback triggers | Juicy Feedback | 5 |
-| JSON save/load | Inter-session Saves | 3 |
-| Offline earnings | Idle Progress | 3 |
-| Restart + Quit | Pausing | 2 |
-| **Total** | | **~18** |
+Per the new `Design_Technical_Document.md`, **Restart + Quit (1pt + 1pt) belong to hc101**, not htong9. The htong9 ship target is the rows below.
+
+| Feature | Story Item | Points | Status |
+|---|---|---|---|
+| Money + Fertilizer ticking (Euler) | Resource Simulation (2 resources) | 2 | Done |
+| Coin particles scaled by rate | Particle Emission Rate Tracking | 1 | Done |
+| 3 upgrade tracks | Leveling-up Stats | 3 | Done |
+| Fertilizer Station unlock | Leveling to New Interactions | 2 | Done |
+| Escalating upgrade + seed costs | Ramping Difficulty | 2 | Done |
+| EaseScale on plant + counter ease | Juicy Feedback (2 eases) | 2 | Done |
+| JSON save/load | Inter-session Saves | 3 | **In progress** |
+| Offline earnings + welcome popup | Idle Progress | 3 | **In progress** |
+| **Total (pre-multiplier)** | | **18** | |
 
 ### Pet Care Owner — Required + Alpha: ~17pts
 

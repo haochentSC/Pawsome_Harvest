@@ -1,6 +1,8 @@
 # Build Progress
 
-**Last updated:** 2026-04-14
+**Last updated:** 2026-05-03
+
+> Authoritative scope is now `docs/Design_Technical_Document.md` and `docs/Design_Vision_Documents.md`. This file tracks build state for the planting track only.
 
 This document tracks what has been built, what is currently broken or stubbed, and what needs to be done next. Update this file whenever you finish a chunk of work.
 
@@ -8,22 +10,25 @@ This document tracks what has been built, what is currently broken or stubbed, a
 
 ## Overall Status
 
-### Planting System (You)
+### Planting System (htong9)
 
 | Phase | Status |
 |---|---|
 | XR Setup (packages, XR Origin) | Done |
-| Economy system (money ticking) | Done |
-| Resource HUD | Done |
-| Feedback system (particles, audio, ease) | Done |
+| Economy system (money ticking, Euler) | Done |
+| Resource HUD (money + generator count + ease) | Done |
+| Feedback system (coin/fert particles, audio, EaseScale, ScalePop) | Done |
 | XR Button (reusable interactable) | Done |
-| Pot loop (plant, grow, harvest) | **Next up** |
-| Shop + Upgrades | Not started |
-| Fertilizer Station unlock | Not started |
-| Save / Load | Not started |
-| Tutorial popups | Not started |
-| Trophy shelf | Not started |
-| Scene geometry + polish | Not started |
+| Pot loop (plant, grow, harvest, EaseScale on plant) | Done |
+| PotManager (active count → EconomyManager) | Done |
+| Upgrades (Soil / Lights / Irrigation, haptic on purchase) | Done |
+| Fertilizer Station unlock (spatial chime) | Done |
+| Fertilizer second-resource ticking | Done |
+| Trophy shelf + EyeFollow | Done (basic — duplication in `ResourceDisplay`, fine to ship) |
+| Tutorial popups | Stub (cube spawn) — not in alpha scope |
+| Save / Load (JSON) | Done |
+| Idle progress (offline earnings + welcome popup) | Done |
+| Scene geometry + polish | Done for alpha |
 
 ### Pet Care System (Teammate)
 
@@ -130,9 +135,26 @@ These are documented so future teammates don't re-introduce the same issues.
 
 ---
 
-## What Comes Next
+## What's Left for htong9 Alpha
+
+**Nothing — all 8 demo rows verified end-to-end (2026-05-03).**
+
+- `Assets/Scripts/Data/SaveData.cs` and `Assets/Scripts/Managers/SaveManager.cs` are wired into the `Managers` GameObject in `SampleScene.unity`.
+- `Assets/Prefabs/WelcomeBackPopup.prefab` is created (duplicate of TutorialPopup) and assigned to `SaveManager.welcomeBackPopupPrefab`.
+- Script Execution Order: `SaveManager = -25`.
+- Round-trip save/load verified: state saved → file persisted → state restored exactly.
+- Offline earnings verified: 30 min rewind = +490 coins (expected 486); 12 h rewind capped at 8 h = +7775 (vs uncapped 11664).
+
+Remaining work is the headset recording itself — see `docs/game_alpha_demo_htong9.md` for the 8-row script and `docs/ALPHA_PROGRESS.md` for the in-flight status tracker.
+
+PauseMenu (Restart + Quit) belongs to **hc101** per the new Design Technical Document — not htong9.
+
+---
+
+## What Comes Next (legacy roadmap — superseded)
 
 ### Immediate Next Task: Prompt 5 — CropData + PotSlot
+> **Already done.** Kept here for historical context. The active alpha next-step is SaveManager (above).
 
 This builds the core game loop: plant a seed, watch it grow, harvest it.
 

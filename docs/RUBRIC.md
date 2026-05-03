@@ -86,8 +86,10 @@ Keep this in mind whenever making design decisions — don't drift from these ma
 | Exponential Costs | Seed cost = 10 × 1.15^seedsBought | Done (in formula, pending PotSlot) |
 | Cooldown Timers | Visual ring fill on each pot showing grow progress | In PotSlot spec |
 | Level-up Reveal | Scale pop + particles on upgrade purchase | Medium |
-| Achievement Trophies | TrophySlot reveals model on milestone events | Low |
-| Anthropomorphizing Eyes | Scarecrow with random blink + slow look-at-player | Low |
+| Achievement Trophies | TrophySlot reveals model on milestone events | Done (basic) |
+| Anthropomorphizing Eyes | Scarecrow with random blink + slow look-at-player | Done (`EyeFollow`) |
+
+> **Note:** Restart Option (1pt) and Quit Option (1pt) are owned by hc101 per the new `Design_Technical_Document.md`, not htong9.
 
 ---
 
