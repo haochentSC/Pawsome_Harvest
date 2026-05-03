@@ -1,5 +1,7 @@
 # Implementation Plan
 
+> **Authoritative scope is now `docs/Design_Technical_Document.md`.** This file remains as a build-time reference for the planting track only. As of 2026-04-26, Prompts 5–9 are complete in code AND scene; Prompts 10 (Save/Idle) is the only remaining htong9 alpha work. PauseMenu (was Prompt 22) has been reassigned to hc101.
+
 This is the complete step-by-step build guide for all three systems.
 
 **Track 1 (Planting, Prompts 1-12):** Work through in order — each step builds on the previous.
@@ -17,8 +19,8 @@ Each "Prompt" is a self-contained chunk of work. When using AI to help code, giv
 
 ## Current Position
 
-> **You are here: Prompt 5 — CropData + PotSlot**
-> Prompts 1–4 are complete. See BUILD_PROGRESS.md for details.
+> **You are here: Prompt 10 — SaveManager + Offline Progress.**
+> Prompts 1–9 are complete in code and scene (~~Prompt 5~~, ~~Prompt 6~~, ~~Prompt 7~~, ~~Prompt 8~~, ~~Prompt 9~~). Prompts 11–12 (Tutorial polish, Trophy/Eye polish) are non-alpha. PauseMenu (was Prompt 22) is now owned by hc101. See BUILD_PROGRESS.md for live state.
 
 ---
 
