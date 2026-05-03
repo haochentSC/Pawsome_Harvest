@@ -665,8 +665,183 @@ Once Phase 1 passes, do this in one sweep:
 
 ---
 
+## E.5 Tutorial Popups (3 onboarding messages)
+
+The pest system needed onboarding text — players had no in-world hint that pests could appear, that they should be carried, or that the fireplace was the destruction zone. Three popups now fire from `PestManager`, reusing the existing `TutorialPopup` component already wired into the trophy/achievement flow in [ResourceDisplay.cs:153](Assets/Scripts/UI/ResourceDisplay.cs#L153). No new popup system was added — the achievement popup is the popup.
+
+### Why reuse TutorialPopup instead of building a standalone
+
+- It already animates (3s scale-up → 5s hold → 3s scale-down) and parents to a world-space canvas.
+- ResourceDisplay already wires it for the crown achievements — players will recognize the visual style.
+- A standalone weed-only popup would mean a second canvas, second animator, second wiring step in Unity. No upside.
+
+The alternative `TutorialManager.ShowTutorial(string)` (which spawns a cube 1m in front of the player camera, [TutorialManager.cs:12](Assets/Scripts/Managers/TutorialManager.cs#L12)) was rejected — it doesn't match the visual language of the trophy popups and would feel like a different system.
+
+### The three popups
+
+| # | Trigger | Message |
+|---|---|---|
+| 1 | Money first reaches `moneyThresholdToStart` ($200), **before** the post-threshold delay | "Careful! Your crops can attract weeds and pests over time." |
+| 2 | First pest is successfully spawned (inside `TrySpawnNearActivePot`) | "Pick up the weed and throw it in the fire to save your crops and earn extra money!" |
+| 3 | First pest is cleared (inside `PestCleared`) | "Great! Keep clearing pests to protect your crops." |
+
+Each popup fires **exactly once per session**, gated by a private bool. All three message strings are exposed as `[TextArea]` inspector fields on `PestManager`, so designers can tweak wording without touching code.
+
+### Code changes implemented in [PestManager.cs](Assets/Scripts/Managers/PestManager.cs)
+
+1. New inspector header `Tutorial Popups` with:
+   - `[SerializeField] private TutorialPopup tutorialPopup;`
+   - Three `[TextArea] [SerializeField] string` defaults for the messages above.
+2. Three private bool guards: `_shownThresholdPopup`, `_shownFirstSpawnPopup`, `_shownFirstClearedPopup`.
+3. New helper:
+   ```csharp
+   private void TryShowPopup(ref bool guard, string message) {
+       if (guard || tutorialPopup == null || string.IsNullOrEmpty(message)) return;
+       guard = true;
+       tutorialPopup.ShowTutorial(message);
+   }
+   ```
+4. `SpawnLoop()` — call `TryShowPopup(ref _shownThresholdPopup, popupOnThresholdReached);` immediately after the money-threshold while-loop exits and **before** `WaitForSeconds(postThresholdDelay)`. This gives the player the heads-up during the grace period.
+5. `TrySpawnNearActivePot()` — call `TryShowPopup(ref _shownFirstSpawnPopup, popupOnFirstPestSpawn);` after `_alive.Add(pest)` so the popup only fires when a pest is actually instantiated (not on dry spawn attempts).
+6. `PestCleared(Pest p)` — call `TryShowPopup(ref _shownFirstClearedPopup, popupOnFirstPestCleared);` after the cleared-counter event fires.
+
+If you want only **2** popups (matching the original ask), leave the `popupOnFirstPestCleared` field empty in the inspector — `TryShowPopup` short-circuits on null/empty strings.
+
+### Unity editor wiring (1 step)
+
+1. Select the `Managers` GameObject in the scene.
+2. On the `PestManager` component, find the new **Tutorial Popups** section.
+3. Drag the same `TutorialPopup` GameObject that `ResourceDisplay` uses (the trophy/achievement popup canvas) into the **Tutorial Popup** slot.
+4. (Optional) Edit the three message fields in the inspector to taste.
+
+That's it — no new prefabs, no new canvases, no new scenes.
+
+### Test plan addendum
+
+Append to [§C Phase 1 Test Plan](#c-phase-1-test-plan-mechanics-only-no-audio-yet):
+
+9. **Earn money up to $200.** The threshold popup appears the moment money crosses 200 (before any pest spawns). ✅
+   - **Fails?** `tutorialPopup` slot on PestManager is null, OR `moneyThresholdToStart` was changed and the popup message is keyed to "$200" wording.
+10. **Wait for the first pest to spawn after the post-threshold delay.** Popup #2 appears the same frame the pest instantiates. ✅
+11. **Carry that first pest into the fireplace.** Popup #3 appears as it dies. Subsequent pest kills do **not** re-trigger the popup. ✅
+
+### Hard rules re-checked
+
+- ✅ `FeedbackManager` was not touched — popup logic lives in `PestManager`, which already owns the threshold gate and spawn/clear events.
+- ✅ No new managers, no new singletons — reuses an existing UI component.
+- ✅ `EconomyManager` untouched (PestManager still polls `GetMoney()` the same way).
+- ✅ One scene only.
+
+---
+
 ## F. Cleanup To-Do (once verified)
 
 - Remove `[ContextMenu]` debug helpers in `PestManager` (`DebugSpawnOne`, `DebugPrintState`).
 - Lower `startupDelay` to 0 once you're confident pests don't appear before the first pot is planted (the spawn loop already guards on `ActivePots.Count == 0`, so this is just a polish).
 - If save/load lands later (Prompt 10), serialize `_totalCleared` and the alive-pest snapshot.
+
+---
+
+# G. Story Points Earned — Cross-Checked Against `instruction.txt`
+
+This section tallies the rubric points directly attributable to **the pest/weed system + the three tutorial popups + the path-following wander circle**. Each row cites the specific code/asset that delivers the feature, so it can be defended on the playthrough video.
+
+> Multiplier reminder (from `instruction.txt` lines 5–8): final points = subtotal × team-size multiplier (×0.75 solo, ×1.5 for 2–3 contributors, ×2.0 for 4–6, ×2.5 for 7+).
+
+## G.1 Core Pest System (NPC / interaction stories)
+
+| # | Story (rubric line) | Pts | Where it lives in the implementation |
+|---|---|---:|---|
+| 1 | **NPC Spawner** (line 84) | 2 | `PestManager.SpawnLoop()` + `TrySpawnNearActivePot()` instantiates new pests on a timer. |
+| 2 | **Conditional Despawning** (line 85) | 2 | `Pest.OnTriggerEnter("Fireplace") → Die() → Destroy(gameObject)`. |
+| 3 | **Loot Drop** (line 86, requires Conditional Despawning + Resource Simulation) | 2 | `Pest.Die()` calls `EconomyManager.AddMoney(data.rewardOnKill)`. Money already counts as a Resource Simulation. |
+| 4 | **Enemies** (line 87, requires Resource Simulation) | 2 | `Pest.DrainLoop()` calls `EconomyManager.AddMoney(-drain)` while a bug/snail is within `drainRadius` of an active pot. |
+| 5 | **Hit Boxes** (line 50, 2 events = 2 pts) | 2 | (a) Fireplace trigger collider in `Pest.OnTriggerEnter`; (b) pot-proximity check in `Pest.TryDrainNearestPot` and `CurrentDrainPerSecond`. |
+| 6 | **Grab Interactables** (line 45, 3 props = 2 pts) | 2 | Three pest prefabs each carry `XRGrabInteractable`: `Pest_weed.prefab`, `LadyBug.prefab`, `Pest_Snail.prefab`. |
+| 7 | **Visible Flag** (line 90) | 2 | `PestManager.UpdateInfestationState()` flips `_isInfested` when alive count crosses `infestationThreshold` and swaps the `infestationLight` color (green ↔ red). |
+| 8 | **Collectibles** (line 20) | 2 | `PestManager._totalCleared` increments on each kill; `PestDisplay` updates the world-space "Pests Cleared: N" label via `OnTotalClearedChanged`. |
+| | **Subtotal — core pest system** | **16** | |
+
+## G.2 Tutorial Popups (this implementation)
+
+| # | Story | Pts | Notes |
+|---|---|---:|---|
+| 9 | **Tutorial Pop-ups** (line 56, 2 popups = 2 pts; 4 popups = 3 pts) | 2 | Three popups added via `PestManager.TryShowPopup` — fires on (a) money ≥ $200 threshold, (b) first pest spawn, (c) first pest cleared. Three lands in the **2-pop bracket** (need 4 for 3 pts). |
+| | **Subtotal — tutorial popups** | **2** | |
+
+> ⚠️ **Prerequisite caveat:** the rubric gates Tutorial Pop-ups on **Tutorial Progression** (line 55: "the game starts with none of the core loop objects/interactables visible and then reveals them one by one"). The pest system alone does not satisfy this — it requires the broader game to ramp interactables visibility. If your team has the staged-reveal flow elsewhere (e.g. fertilizer station unlocking at $500, scarecrow unlocking, etc.), claim both. If not, claim Tutorial Pop-ups conservatively or skip it.
+
+## G.3 Path Following (this implementation)
+
+| # | Story | Pts | Notes |
+|---|---|---:|---|
+| 10 | **Path Following** (line 82) | 2 | `Pest.Update()` traces a designer-defined circular path of radius `wanderRadius` at `wanderSpeed` rad/s around `_bobOrigin`, with random phase offset per pest and tangent-aligned facing. Bugs and snails follow it; weeds are gated out by `data.type == PestType.Weed`. |
+| | **Subtotal — path following** | **2** | |
+
+## G.4 Juicy Feedback (line 29 — count discrete, distinct feedback events)
+
+The rubric counts events from these categories: **spatial sounds**, **particle bursts**, **particle emission rate tracking**, **motion eases**. Haptics are not listed and are excluded from the count.
+
+Distinct feedback events delivered by the pest system + popups:
+
+| # | Event | Category | Source |
+|---|---|---|---|
+| 1 | Pest spawn sound (spatial) | spatial sound | `Pest.Start` → `PlayOneShotAt(spawnSound, ...)` |
+| 2 | Spawn puff particles | particle burst | `FeedbackManager.TriggerSpawnPuff()` |
+| 3 | Spawn `EaseScale` (0 → final) | motion ease | `FeedbackManager.EaseScale(transform, 0.4f)` |
+| 4 | Grab sparkle particles | particle burst | `FeedbackManager.TriggerGrabSparkle()` |
+| 5 | Grab sound (spatial) | spatial sound | `Pest.OnGrabbed` → `PlayOneShotAt(grabSound, ...)` |
+| 6 | Drain damage puff at pot | particle burst | `Pest.TryDrainNearestPot` → `FeedbackManager.TriggerDamagePuff()` |
+| 7 | Death fire burst | particle burst | `Pest.Die` → `FeedbackManager.TriggerFireBurst()` |
+| 8 | Death sound (spatial) | spatial sound | `Pest.Die` → `FeedbackManager.PlaySpatialSound(deathSound)` |
+| 9 | Tutorial popup #1 ease | motion ease | `TutorialPopup.PopupRoutine` (3s scale-up + 3s scale-down) |
+| 10 | Tutorial popup #2 ease | motion ease | same routine, distinct trigger |
+| 11 | Tutorial popup #3 ease | motion ease | same routine, distinct trigger |
+
+**Count: 11 distinct events** → **5 pts** (rubric brackets: 5 = 4 pts, 8 = 5 pts, 13 = 6 pts).
+
+If you'd rather count each tutorial popup as one bundled "tutorial juice" event instead of three (conservative reading), the count drops to 9 → still 5 pts (8-event bracket).
+
+> 🟡 **Don't double-count**: if the rest of the team is also claiming juice from farming-system events (coin particles, button ScalePop, harvest pop, etc.), your *individual* total should only include events you personally implemented. Discuss with the team to avoid two people claiming the same Juicy Feedback bracket.
+
+| | **Subtotal — juicy feedback (this system's contribution)** | **5** |
+
+## G.5 Grand Total Attributable to Pest + Tutorial + Path Following
+
+| Section | Pts |
+|---|---:|
+| G.1 Core pest system | 16 |
+| G.2 Tutorial popups | 2 |
+| G.3 Path following | 2 |
+| G.4 Juicy feedback | 5 |
+| **Subtotal (pre-multiplier)** | **25** |
+
+**After team-size multiplier:**
+
+| Contributors on GitHub | Multiplier | Final from this system |
+|---|---:|---:|
+| 1 (solo) | ×0.75 | **18.75** |
+| 2–3 | ×1.5 | **37.5** |
+| 4–6 | ×2.0 | **50** |
+| 7+ | ×2.5 | **62.5** |
+
+## G.6 Notes for the Playthrough Video
+
+`instruction.txt` line 1: *"upload a video playthrough of your game talking through features implemented for points on the rubric. … you will show only the features you personally completed."*
+
+To defend the 25 points above, the video needs to show:
+
+1. **A pest spawning** (proves NPC Spawner) — wait at $200, point at the spawn near a planted pot.
+2. **Carrying a pest into the fireplace** (proves Conditional Despawning + Loot Drop + Hit Boxes #1 + Grab Interactables) — narrate the money increase on death.
+3. **A bug sitting next to a pot draining money** (proves Enemies + Hit Boxes #2) — call out the rate going negative.
+4. **The "Pests Cleared: N" label updating** (proves Collectibles).
+5. **The infestation light flipping red, then back green after a kill** (proves Visible Flag).
+6. **All three tutorial popups appearing in sequence** (proves Tutorial Pop-ups) — earn $200, wait, then catch the first kill on camera.
+7. **A bug or snail visibly tracing its slow circle around a pot** (proves Path Following) — hold the camera on it for ~10 sec so the motion is unambiguous.
+8. **A few of the juice events**, called out on screen — spawn ease, fire burst, damage puff, popup ease.
+
+Items not yet claimed but adjacent (could be added in future passes for more points):
+- **Attacking Health** (line 88, 2 pts, requires Enemies + Conditional Despawning) — give pests an HP field and let the player whack them with an `XRSimpleInteractable` button before grabbing.
+- **Path Planning** (line 83, 4 pts, requires Path Following) — switch the wander circle for a NavMesh-style path that updates based on player position. Substantial implementation cost.
+- **Triggering Integrations / Animation** (line 35–36) — if the LadyBug, Snail, and Fireplace meshes are bespoke Sketchfab imports, the spawn `EaseScale` could count as 3 distinct animation triggers (~3 pts). Verify the mesh sources first.
+

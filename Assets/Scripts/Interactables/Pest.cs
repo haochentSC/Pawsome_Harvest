@@ -31,11 +31,22 @@ public class Pest : MonoBehaviour
     [Tooltip("Bob frequency in Hz.")]
     [SerializeField] private float bobFrequency = 1.5f;
 
+    [Header("Wander (bugs / snails only -- weeds stay rooted)")]
+    [Tooltip("Radius of the circular wander path in metres.")]
+    [SerializeField] private float wanderRadius = 0.12f;
+    [Tooltip("Angular speed of the wander circle in radians/sec. Very slow on purpose.")]
+    [SerializeField] private float wanderSpeed = 0.25f;
+    [Tooltip("If true, the pest yaws to face its motion direction along the circle.")]
+    [SerializeField] private bool wanderFaceMotion = true;
+
     // ── Runtime ──────────────────────────────────────────────────────────────
     private bool             _isHeld;
     private bool             _isDying;
     private Vector3          _bobOrigin;
     private float            _bobPhaseOffset;
+    private float            _wanderPhaseOffset;
+    private Quaternion       _baseRotation;
+    private Rigidbody        _rb;
     private Coroutine        _drainRoutine;
     private XRBaseController _lastGrabController;
 
@@ -70,10 +81,31 @@ public class Pest : MonoBehaviour
     // Unity lifecycle
     // ─────────────────────────────────────────────────────────────────────────
 
+    private void Awake()
+    {
+        // Existing prefabs were serialized before the wander fields were added, so Unity
+        // loads them as 0 (type default) regardless of the C# inline initializer. Snap
+        // any 0 back to a sensible runtime default so bugs/snails wander out-of-the-box.
+        if (wanderRadius <= 0f) wanderRadius = 0.12f;
+        if (wanderSpeed  <= 0f) wanderSpeed  = 0.25f;
+    }
+
     private void Start()
     {
-        _bobOrigin      = transform.position;
-        _bobPhaseOffset = Random.value * 10f;       // de-sync multiple pests
+        _bobOrigin         = transform.position;
+        _bobPhaseOffset    = Random.value * 10f;                    // de-sync vertical bob
+        _wanderPhaseOffset = Random.value * Mathf.PI * 2f;          // de-sync circular path
+        _baseRotation      = transform.rotation;                    // preserve spawn yaw
+
+        // Disable physics while autonomous so transform writes (bob/wander) aren't fought
+        // by gravity or collider depenetration. XRGrabInteractable will toggle this during
+        // a grab; OnReleased reasserts kinematic + zero velocity.
+        _rb = GetComponent<Rigidbody>();
+        if (_rb != null)
+        {
+            _rb.useGravity  = false;
+            _rb.isKinematic = true;
+        }
 
         // ── Spawn feedback (rubric hooks #1, #2) ─────────────────────────────
         if (FeedbackManager.Instance != null)
@@ -91,11 +123,36 @@ public class Pest : MonoBehaviour
 
     private void Update()
     {
-        // Cosmetic bob -- skipped while held or while being destroyed.
-        if (_isHeld || _isDying || bobAmplitude <= 0f) return;
+        if (_isHeld || _isDying) return;
 
-        float y = Mathf.Sin((Time.time + _bobPhaseOffset) * bobFrequency * Mathf.PI * 2f) * bobAmplitude;
-        transform.position = _bobOrigin + new Vector3(0f, y, 0f);
+        float y = bobAmplitude > 0f
+            ? Mathf.Sin((Time.time + _bobPhaseOffset) * bobFrequency * Mathf.PI * 2f) * bobAmplitude
+            : 0f;
+
+        // Weeds are rooted -- only bugs and snails wander.
+        bool wanders = data != null
+                    && data.type != PestType.Weed
+                    && wanderRadius > 0f
+                    && wanderSpeed  > 0f;
+
+        if (wanders)
+        {
+            float t = Time.time * wanderSpeed + _wanderPhaseOffset;
+            float x = Mathf.Cos(t) * wanderRadius;
+            float z = Mathf.Sin(t) * wanderRadius;
+            transform.position = _bobOrigin + new Vector3(x, y, z);
+
+            if (wanderFaceMotion)
+            {
+                // Tangent to the circle = motion direction.
+                Vector3 tangent = new Vector3(-Mathf.Sin(t), 0f, Mathf.Cos(t));
+                transform.rotation = Quaternion.LookRotation(tangent, Vector3.up);
+            }
+        }
+        else
+        {
+            transform.position = _bobOrigin + new Vector3(0f, y, 0f);
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -127,6 +184,16 @@ public class Pest : MonoBehaviour
         _isHeld = false;
         // Reseat the bob origin to wherever the pest just landed so it bobs from rest, not snaps.
         _bobOrigin = transform.position;
+
+        // Reassert kinematic + no gravity so wander resumes cleanly. XRGrabInteractable
+        // may have flipped these during the grab depending on its movement type.
+        if (_rb != null)
+        {
+            _rb.linearVelocity  = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            _rb.useGravity      = false;
+            _rb.isKinematic     = true;
+        }
     }
 
     private static XRBaseController ResolveController(SelectEnterEventArgs args)

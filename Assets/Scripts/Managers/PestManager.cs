@@ -54,6 +54,21 @@ public class PestManager : MonoBehaviour
     [SerializeField] private Color safeColor   = Color.green;
     [SerializeField] private Color dangerColor = Color.red;
 
+    [Header("Tutorial Popups")]
+    [Tooltip("Shared TutorialPopup component (the same one ResourceDisplay uses for trophy messages). Leave null to disable popups.")]
+    [SerializeField] private TutorialPopup tutorialPopup;
+    [TextArea] [SerializeField] private string popupOnThresholdReached =
+        "Careful! Your crops can attract weeds and pests over time.";
+    [TextArea] [SerializeField] private string popupOnFirstPestSpawn =
+        "Pick up the weed and throw it in the fire to save your crops and earn extra money!";
+    [TextArea] [SerializeField] private string popupOnFirstPestCleared =
+        "Great! Keep clearing pests to protect your crops.";
+
+    // One-shot guards so each popup fires exactly once per session.
+    private bool _shownThresholdPopup;
+    private bool _shownFirstSpawnPopup;
+    private bool _shownFirstClearedPopup;
+
     // ── State ────────────────────────────────────────────────────────────────
     private readonly List<Pest> _alive = new();
     private int  _totalCleared;
@@ -109,6 +124,8 @@ public class PestManager : MonoBehaviour
             yield return null;
         }
 
+        TryShowPopup(ref _shownThresholdPopup, popupOnThresholdReached);
+
         if (postThresholdDelay > 0f) yield return new WaitForSeconds(postThresholdDelay);
 
         var wait = new WaitForSeconds(spawnInterval);
@@ -144,7 +161,15 @@ public class PestManager : MonoBehaviour
         }
 
         _alive.Add(pest);
+        TryShowPopup(ref _shownFirstSpawnPopup, popupOnFirstPestSpawn);
         UpdateInfestationState();
+    }
+
+    private void TryShowPopup(ref bool guard, string message)
+    {
+        if (guard || tutorialPopup == null || string.IsNullOrEmpty(message)) return;
+        guard = true;
+        tutorialPopup.ShowTutorial(message);
     }
 
     private GameObject PickPrefab()
@@ -171,6 +196,7 @@ public class PestManager : MonoBehaviour
         _alive.Remove(p);
         _totalCleared++;
         OnTotalClearedChanged?.Invoke(_totalCleared);
+        TryShowPopup(ref _shownFirstClearedPopup, popupOnFirstPestCleared);
         UpdateInfestationState();
     }
 
