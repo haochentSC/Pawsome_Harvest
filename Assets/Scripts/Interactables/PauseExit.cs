@@ -22,35 +22,23 @@ public class PauseExit : MonoBehaviour
     // [핵심] 게임 일시정지 함수
     public void TogglePause()
     {
-        isPaused = !isPaused;
-
-        if (isPaused)
+        // 현재 게임이 흐르고 있다면 멈추고, 멈춰 있다면 다시 흐르게 합니다.
+        if (Time.timeScale == 1.0f)
         {
-            // 게임 시간을 멈춥니다. (물리, 애니메이션 등이 멈춤)
-            Time.timeScale = 0f;
-            if (pauseMenuPanel != null) pauseMenuPanel.SetActive(true);
-            Debug.Log("게임 일시정지");
+            Time.timeScale = 0.0f; // 게임 정지
+            Debug.Log("Game Paused!");
         }
         else
         {
-            // 게임 시간을 다시 흐르게 합니다.
-            ResumeGame();
+            Time.timeScale = 1.0f; // 게임 재개
+            Debug.Log("Game Resumed!");
         }
-    }
-
-    // 게임 계속하기 (UI 버튼용)
-    public void ResumeGame()
-    {
-        isPaused = false;
-        Time.timeScale = 1f;
-        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
-        Debug.Log("게임 재개");
     }
 
     // [핵심] 게임 종료 함수
     public void QuitGame()
     {
-        Debug.Log("게임 종료 버튼 눌림");
+        Debug.Log("Game Quit!");
 
         // 1. 에디터에서 플레이 중일 때 끄기
 #if UNITY_EDITOR

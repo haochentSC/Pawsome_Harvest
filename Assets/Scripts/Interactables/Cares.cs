@@ -37,7 +37,10 @@ public class Cares : MonoBehaviour
             case "Pill":
                 scoreManager.AddHealth(100.0f); // 알약은 체력 추가
                 Debug.Log("Pill Detected: Health Added!");
-                CreateStarInSky();
+                for (int i = 0; i < 10; i++)
+                {
+                    CreateStarInSky();
+                }
                 PlaySuccessSound(); // 소리 재생!
                 ResetBlinker(other);
                 break;
@@ -45,7 +48,10 @@ public class Cares : MonoBehaviour
             case "Food":
                 scoreManager.AddHungry(-100.0f);  // 씨앗은 점수 추가
                 Debug.Log("Seed Detected: Score Added!");
-                CreateStarInSky();
+                for (int i = 0; i < 10; i++)
+                {
+                    CreateStarInSky();
+                }
                 PlaySuccessSound(); // 소리 재생!
                 ResetBlinker(other);
                 break;
@@ -53,7 +59,10 @@ public class Cares : MonoBehaviour
             case "Care":
                 scoreManager.AddComfort(50.0f); // 물은 게이지 채우기
                 Debug.Log("Water Detected: Gauge Filled!");
-                CreateStarInSky();
+                for (int i = 0; i < 10; i++)
+                {
+                    CreateStarInSky();
+                }
                 ResetBlinker(other);
                 break;
 

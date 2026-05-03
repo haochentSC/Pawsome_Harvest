@@ -9,6 +9,7 @@ TagManager:
   - Food
   - Pill
   - Brush
+  - Care
   layers:
   - Default
   - TransparentFX
