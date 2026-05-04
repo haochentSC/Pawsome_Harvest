@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2f6673445f4f44eca6dfa5f0d0a1071, type: 3}
+  m_Name: PhokemonRewardPool
+  m_EditorClassIdentifier: Assembly-CSharp::LotteryMachine.RewardPool
+  rewards:
+  - {fileID: 11400000, guid: 0923ca0ee6d144653880a1f8ad793f12, type: 2}
+  - {fileID: 11400000, guid: a7ec216e337e14d66a186fb79ab5b7d5, type: 2}
+  - {fileID: 11400000, guid: 3693413918413488fbe645b6257210d2, type: 2}
+  - {fileID: 11400000, guid: 89c91e9abc77e427e9c91ab970c4520f, type: 2}
+  - {fileID: 11400000, guid: 7d05e8b7d8d1c4dd2a2389ffb043e843, type: 2}
+  - {fileID: 11400000, guid: 1576f9384e31a4291998af4dc0ab9848, type: 2}
+  - {fileID: 11400000, guid: 70f798ee111243358c697497de0e9feb, type: 2}
+  - {fileID: 11400000, guid: b30312d5c42a41be80c3a5c99caf6058, type: 2}
+  - {fileID: 11400000, guid: 86336cd84387d4f10b2ad9b51ea61c5f, type: 2}
+  - {fileID: 11400000, guid: f43b556d7f62441b87a37e0c1d50287f, type: 2}

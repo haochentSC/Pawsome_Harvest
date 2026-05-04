@@ -133,6 +133,12 @@ public class SaveManager : MonoBehaviour
             data.pots = Array.Empty<PotSaveData>();
         }
 
+        var lotteryBridge = FindFirstObjectByType<GreenhouseLotteryBridge>();
+        if (lotteryBridge != null)
+        {
+            data.lotteryJsonBlob = lotteryBridge.GetSaveStateJson();
+        }
+
         data.lastSaveIsoUtc = DateTime.UtcNow.ToString("o");
         return data;
     }
@@ -184,6 +190,7 @@ public class SaveManager : MonoBehaviour
         UpgradeManager.Instance?.RestoreState(data.soilLevel, data.lightsLevel, data.irrigationLevel);
         EconomyManager.Instance?.RestoreState(data.money, data.fertilizer, data.fertilizerUnlocked);
         UnlockManager.Instance?.RestoreState(data.fertilizerUnlocked);
+        FindFirstObjectByType<GreenhouseLotteryBridge>()?.RestoreStateJson(data.lotteryJsonBlob);
 
         if (data.pots != null && data.pots.Length > 0)
         {

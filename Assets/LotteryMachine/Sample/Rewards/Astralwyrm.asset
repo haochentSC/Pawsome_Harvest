@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e79e6c6dac8934fb59897b669e0f37e5, type: 3}
+  m_Name: Astralwyrm
+  m_EditorClassIdentifier: Assembly-CSharp::LotteryMachine.RewardDefinition
+  rewardId: astralwyrm
+  displayName: Astralwyrm
+  rarity: 4
+  weight: 10
+  cardArt: {fileID: 0}
+  cardMaterial: {fileID: 2100000, guid: bf7249536a484975a5b7ade216c9e335, type: 2}
+  rewardPrefab: {fileID: 1111111111111111111, guid: 6f7f33d70e8d474a91c1e63b96ec31f1, type: 3}
