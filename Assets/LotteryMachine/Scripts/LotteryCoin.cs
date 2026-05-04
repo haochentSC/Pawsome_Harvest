@@ -8,6 +8,8 @@ namespace LotteryMachine
     [DisallowMultipleComponent]
     public sealed class LotteryCoin : MonoBehaviour
     {
+        private const string SimpleGemsAnimTypeName = "Benjathemaker.SimpleGemsAnim";
+
         [SerializeField] private LotteryGameManager gameManager;
         [SerializeField] private bool countedInInventory;
         [SerializeField] private bool countPickupInInventory = true;
@@ -45,6 +47,7 @@ namespace LotteryMachine
 
             EnsureCollider(coinObject);
             EnsureRigidbody(coinObject);
+            DisableGemPresentationAnimation(coinObject);
             coin.grabInteractable = EnsureGrabInteractable(coinObject);
             if (coin.isActiveAndEnabled)
             {
@@ -54,11 +57,6 @@ namespace LotteryMachine
             if (owner != null)
             {
                 coin.gameManager = owner;
-            }
-
-            if (disablePresentationAnimation)
-            {
-                DisableGemPresentationAnimation(coinObject);
             }
 
             return coin;
@@ -98,6 +96,7 @@ namespace LotteryMachine
         private void Awake()
         {
             grabInteractable = GetComponent<XRGrabInteractable>();
+            DisableGemPresentationAnimation(gameObject);
         }
 
         private void OnEnable()
@@ -211,7 +210,7 @@ namespace LotteryMachine
             var behaviours = coinObject.GetComponentsInChildren<MonoBehaviour>();
             foreach (var behaviour in behaviours)
             {
-                if (behaviour != null && behaviour.GetType().FullName == "Benjathemaker.SimpleGemsAnim")
+                if (behaviour != null && behaviour.GetType().FullName == SimpleGemsAnimTypeName)
                 {
                     behaviour.enabled = false;
                 }
