@@ -2,6 +2,11 @@ using UnityEngine;
 
 namespace LotteryMachine
 {
+    public interface ILotteryCoinExchangeProvider
+    {
+        bool TryExchangeMoneyForStoredCoin(LotteryCoinCounterStation station);
+    }
+
     public sealed class LotteryCoinCounterStation : MonoBehaviour
     {
         [SerializeField] private LotteryGameManager gameManager;
@@ -62,6 +67,12 @@ namespace LotteryMachine
 
         public bool TryExchange()
         {
+            var exchangeProvider = ResolveExchangeProvider();
+            if (exchangeProvider != null)
+            {
+                return exchangeProvider.TryExchangeMoneyForStoredCoin(this);
+            }
+
             var manager = ResolveGameManager();
             if (manager == null)
             {
@@ -111,6 +122,29 @@ namespace LotteryMachine
             }
 
             return spawnedCoin;
+        }
+
+        private ILotteryCoinExchangeProvider ResolveExchangeProvider()
+        {
+            var parentBehaviours = GetComponentsInParent<MonoBehaviour>(true);
+            for (var i = 0; i < parentBehaviours.Length; i++)
+            {
+                if (parentBehaviours[i] is ILotteryCoinExchangeProvider parentProvider)
+                {
+                    return parentProvider;
+                }
+            }
+
+            var behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
+            for (var i = 0; i < behaviours.Length; i++)
+            {
+                if (behaviours[i] is ILotteryCoinExchangeProvider provider)
+                {
+                    return provider;
+                }
+            }
+
+            return null;
         }
 
         private LotteryGameManager ResolveGameManager()

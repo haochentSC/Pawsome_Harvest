@@ -118,6 +118,23 @@ namespace LotteryMachine
             return true;
         }
 
+        public void GrantStoredCoins(int amount)
+        {
+            if (amount <= 0)
+            {
+                return;
+            }
+
+            coins += amount;
+            balanceChanged.Invoke();
+        }
+
+        public void RestoreStoredCoins(int amount)
+        {
+            coins = Mathf.Max(0, amount);
+            balanceChanged.Invoke();
+        }
+
         public void ExchangeMoneyForStoredCoin()
         {
             TryExchangeMoneyForStoredCoin();
